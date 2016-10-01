@@ -99,6 +99,7 @@
     <Compile Include="Models\Telemetry.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\Telemetry\AzureFunctionTelemetryRepository.cs" />
+    <Compile Include="Repositories\Telemetry\AzureFunctionTelemetryRepositoryKey.cs" />
     <Compile Include="Repositories\Telemetry\ITelemetryRepository.cs" />
     <Compile Include="Repositories\Temperature\FEZHATTemperatureRepository.cs" />
     <Compile Include="Repositories\Photo\IPhotoRepository.cs" />

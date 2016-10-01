@@ -8,12 +8,8 @@ using System.Diagnostics;
 
 namespace Kiwiot.Faceometer.IoTCore.Repositories.Telemetry
 {
-    public sealed class AzureFunctionTelemetryRepository : ITelemetryRepository
+    public sealed partial class AzureFunctionTelemetryRepository : ITelemetryRepository
     {
-        #region Private Fields
-        private string functionUrl = "";
-        #endregion
-
         #region Private Static Functions
         private static async Task<string> HttpPost(string url, string body, string contentType = "application/json")
         {
