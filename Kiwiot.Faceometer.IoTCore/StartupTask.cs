@@ -4,12 +4,9 @@ using System.Threading.Tasks;
 using Kiwiot.Faceometer.IoTCore.Repositories.Photo;
 using Kiwiot.Faceometer.IoTCore.Repositories.Temperature;
 using Kiwiot.Faceometer.IoTCore.Models;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Linq;
 using Kiwiot.Faceometer.IoTCore.Repositories.Telemetry;
-
-// The Background Application template is documented at http://go.microsoft.com/fwlink/?LinkID=533884&clcid=0x409
 
 namespace Kiwiot.Faceometer.IoTCore
 {
