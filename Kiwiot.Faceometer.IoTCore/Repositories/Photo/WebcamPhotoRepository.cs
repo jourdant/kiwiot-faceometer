@@ -39,13 +39,13 @@ namespace Kiwiot.Faceometer.IoTCore.Repositories.Photo
         public IAsyncOperation<IEnumerable<byte>> GetPhotoBytesAsync() => GetPhotoBytesAsyncTask().AsAsyncOperation();
         private async Task<IEnumerable<byte>> GetPhotoBytesAsyncTask()
         {
-            videoDevices = DeviceInformation.FindAllAsync(DeviceClass.VideoCapture).GetResults();
-            audioDevices = DeviceInformation.FindAllAsync(DeviceClass.AudioCapture).GetResults();
-            Log($"Video devices detected: {videoDevices.Count}");
-            Log($"Audio devices detected: {audioDevices.Count}");
+            //videoDevices = DeviceInformation.FindAllAsync(DeviceClass.VideoCapture).GetResults();
+            //audioDevices = DeviceInformation.FindAllAsync(DeviceClass.AudioCapture).GetResults();
+            //Log($"Video devices detected: {videoDevices.Count}");
+            //Log($"Audio devices detected: {audioDevices.Count}");
 
-            if (videoDevices.Count > 0)
-            {
+            //if (videoDevices.Count > 0)
+            //{
                 using (var captureStream = new InMemoryRandomAccessStream())
                 {
                     await webcam.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateJpeg(), captureStream);
@@ -57,8 +57,8 @@ namespace Kiwiot.Faceometer.IoTCore.Repositories.Photo
 
                     return bytes;
                 }
-            }
-            else throw new Exception("There are no video devices available to capture image.");
+            //}
+            //else throw new Exception("There are no video devices available to capture image.");
         }
 
     }

@@ -15,7 +15,7 @@ namespace Kiwiot.Faceometer.IoTCore
 {
     public sealed class StartupTask : IBackgroundTask
     {
-        int refreshTime = 30;
+        int refreshTime = 300;
 
         public void Log(string message) => Debug.WriteLine($"{DateTime.Now.ToString("[yyyy:MM:dd hh:mm:ss]")}  ({this.GetType().Name})  {message}");
 
