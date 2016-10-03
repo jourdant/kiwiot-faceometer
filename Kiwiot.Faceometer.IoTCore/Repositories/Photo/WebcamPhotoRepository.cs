@@ -39,27 +39,17 @@ namespace Kiwiot.Faceometer.IoTCore.Repositories.Photo
         public IAsyncOperation<IEnumerable<byte>> GetPhotoBytesAsync() => GetPhotoBytesAsyncTask().AsAsyncOperation();
         private async Task<IEnumerable<byte>> GetPhotoBytesAsyncTask()
         {
-            //videoDevices = DeviceInformation.FindAllAsync(DeviceClass.VideoCapture).GetResults();
-            //audioDevices = DeviceInformation.FindAllAsync(DeviceClass.AudioCapture).GetResults();
-            //Log($"Video devices detected: {videoDevices.Count}");
-            //Log($"Audio devices detected: {audioDevices.Count}");
+            using (var captureStream = new InMemoryRandomAccessStream())
+            {
+                await webcam.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateJpeg(), captureStream);
 
-            //if (videoDevices.Count > 0)
-            //{
-                using (var captureStream = new InMemoryRandomAccessStream())
-                {
-                    await webcam.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateJpeg(), captureStream);
+                var reader = new DataReader(captureStream.GetInputStreamAt(0));
+                var bytes = new byte[captureStream.Size];
+                await reader.LoadAsync((uint)captureStream.Size);
+                reader.ReadBytes(bytes);
 
-                    var reader = new DataReader(captureStream.GetInputStreamAt(0));
-                    var bytes = new byte[captureStream.Size];
-                    await reader.LoadAsync((uint)captureStream.Size);
-                    reader.ReadBytes(bytes);
-
-                    return bytes;
-                }
-            //}
-            //else throw new Exception("There are no video devices available to capture image.");
+                return bytes;
+            }
         }
-
     }
 }
