@@ -32,23 +32,30 @@ namespace Kiwiot.Faceometer.IoTCore
             //app logic
             while (true)
             {
-                //retrieve data
-                var photo = await photoRepository.GetPhotoBytesAsync();
-                var temperature = await temperatureRepository.GetTemperatureAsync();
-
-                //prepare and send payload
-                var telemetry = new Telemetry() { Temperature = temperature, Image = Convert.ToBase64String(photo.ToArray()) };
-                var resp = await telemetryRepository.SubmitTelemetryAsync(telemetry);
-
-                //check response for instructions from the cloud
-                if (resp.RefreshTime != null && refreshTime != (int)resp.RefreshTime)
+                try
                 {
-                    Log($"Updating refresh time to: {(int)resp.RefreshTime} seconds");
-                    refreshTime = resp.RefreshTime;
+                    //retrieve data
+                    var photo = await photoRepository.GetPhotoBytesAsync();
+                    var temperature = await temperatureRepository.GetTemperatureAsync();
+
+                    //prepare and send payload
+                    var telemetry = new Telemetry() { Temperature = temperature, Image = Convert.ToBase64String(photo.ToArray()) };
+                    var resp = await telemetryRepository.SubmitTelemetryAsync(telemetry);
+
+                    //check response for instructions from the cloud
+                    if (resp.RefreshTime != null && refreshTime != (int)resp.RefreshTime)
+                    {
+                        Log($"Updating refresh time to: {(int)resp.RefreshTime} seconds");
+                        refreshTime = resp.RefreshTime;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log($"Exception occurred. Details: {ex.ToString()}");
                 }
 
                 //replacement for Thread.Sleep in UWP
-                Log($"Waiting for {(int)resp.RefreshTime} seconds");
+                Log($"Waiting for {refreshTime} seconds");
                 await Task.Delay(TimeSpan.FromSeconds(refreshTime));
             }
 
