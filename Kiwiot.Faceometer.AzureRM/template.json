@@ -2,9 +2,14 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "Cognitive Services Name": { "type": "String" },
-        "Storage Account Name": { "type": "String" },
-        "Functions Name": { "type": "String" }
+        "Faceometer Upload Interval" : {
+            "type": "int",
+            "minValue": 10,
+            "defaultValue": 300
+        },
+        "Cognitive Services Name": { "type": "string", "defaultValue": "faceometer-facepi" },
+        "Storage Account Name": { "type": "string", "defaultValue": "faceometerstorage" },
+        "Functions Name": { "type": "string", "defaultValue": "faceometer-functions" }
     },
     "variables": {},
     "resources": [
@@ -22,7 +27,7 @@
             "resources": [],
             "dependsOn": [],
             "tags": { "source": "https://blog.jourdant.me" }
-        },
+            },
         {
             "comments": "Used for storing the Azure Functions Logs and Image files",
             "type": "Microsoft.Storage/storageAccounts",
@@ -34,28 +39,70 @@
             "name": "[parameters('Storage Account Name')]",
             "apiVersion": "2016-01-01",
             "location": "[resourceGroup().location]",
-            "tags": {},
             "properties": {},
             "resources": [],
             "dependsOn": [],
             "tags": { "source": "https://blog.jourdant.me" }
         },
-        {
-            "comments": "Hosts the function acting as the IoT gateway.",
-            "type": "Microsoft.Web/sites",
-            "kind": "functionapp",
-            "name": "[parameters('functions_name')]",
+                {
             "apiVersion": "2015-08-01",
-            "location": "[resourceGroup().location]",
+            "name": "[parameters('Functions Name')]",
+            "type": "Microsoft.Web/sites",
             "properties": {
                 "name": "[parameters('Functions Name')]",
-                "hostNames": [
-                    "[concat(parameters('Functions Name'), '.azurewebsites.net')]"
-                ]
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "AzureWebJobsDashboard",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('Storage Account Name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('Storage Account Name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('Storage Account Name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('Storage Account Name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~0.6"
+                        },
+                        {
+                            "name": "AZUREJOBS_EXTENSION_VERSION",
+                            "value": "beta"
+                        },
+                        {
+                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                            "value": "4.1.2"
+                        },
+                        {
+                            "name": "PowerBIUrl",
+                            "value": ""
+                        },
+                        {
+                            "name": "CognitiveServicesKey",
+                            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('Cognitive Services Name')), providers('Microsoft.CognitiveServices', 'accounts').apiVersions[0]).key1]"
+                        },
+                        {
+                            "name": "RefreshTime",
+                            "value": "[parameters('Faceometer Upload Interval')]"
+                        }
+                    ],
+                    "connectionStrings": [
+                        {
+                            "name": "AzureStorageConnectionString",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('Storage Account Name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('Storage Account Name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
+                            "type": 3
+                        }
+                    ]
+                }
             },
-            "resources": [],
-            "dependsOn": [],
-            "tags": { "source": "https://blog.jourdant.me" }
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('Storage Account Name'))]",
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('Cognitive Services Name'))]"
+            ],
+            "location": "[resourceGroup().location]",
+            "tags": {
+            },
+            "kind": "functionapp"
         }
+        
     ]
 }

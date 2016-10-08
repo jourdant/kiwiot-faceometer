@@ -3,13 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "Cognitive Services Name": {
-            "value": "faceometer-cognitiveservices"
+            "value": "faceometer-faceapi"
         },
         "Storage Account Name": {
             "value": "faceometerstorage"
         },
         "Functions Name": {
             "value": "faceometer-functions"
+        },
+        "Faceometer Upload Interval": {
+            "value": 300
         }
     }
 }
