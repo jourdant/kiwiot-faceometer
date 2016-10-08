@@ -36,6 +36,9 @@ namespace Kiwiot.Faceometer.IoTCore.Repositories.Telemetry
         public IAsyncOperation<dynamic> SubmitTelemetryAsync(Models.Telemetry telemetry) => SubmitTelemetryAsyncTask(telemetry).AsAsyncOperation();
         private async Task<dynamic> SubmitTelemetryAsyncTask(Models.Telemetry telemetry)
         {
+            if (functionUrl == string.Empty)
+                throw new Exception("URL must be updated in Repositories/Telemetry/AzureFunctionTelemetryRepositoryKey.cs");
+
             Log("Serialising payload to JSON");
             var json = JsonConvert.SerializeObject(telemetry);
 
