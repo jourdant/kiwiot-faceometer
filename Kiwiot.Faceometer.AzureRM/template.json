@@ -5,9 +5,9 @@
                 "source": "empty"
     },
     "parameters": {
-        "cognitive_services_name": { "type": "String" },
-        "storage_account_name": { "type": "String" },
-        "functions_name": { "type": "String" }
+        "Cognitive Services Name": { "type": "String" },
+        "Storage Account Name": { "type": "String" },
+        "Functions Name": { "type": "String" }
     },
     "variables": {},
     "resources": [
@@ -18,7 +18,7 @@
                 "name": "F0"
             },
             "kind": "Face",
-            "name": "[parameters('cognitive_services_name')]",
+            "name": "[parameters('Cognitive Services Name')]",
             "apiVersion": "2016-02-01-preview",
             "location": "westus",
             "properties": {},
@@ -33,7 +33,7 @@
                 "tier": "Standard"
             },
             "kind": "Storage",
-            "name": "[parameters('storage_account_name')]",
+            "name": "[parameters('Storage Account Name')]",
             "apiVersion": "2016-01-01",
             "location": "[resourceGroup().location]",
             "tags": {},
@@ -49,9 +49,9 @@
             "apiVersion": "2015-08-01",
             "location": "[resourceGroup().location]",
             "properties": {
-                "name": "[parameters('functions_name')]",
+                "name": "[parameters('Functions Name')]",
                 "hostNames": [
-                    "[concat(parameters('functions_name'), '.azurewebsites.net')]"
+                    "[concat(parameters('Functions Name'), '.azurewebsites.net')]"
                 ]
             },
             "resources": [],
