@@ -28,6 +28,8 @@ namespace Kiwiot.Faceometer.IoTCore.Repositories.Temperature
         public IAsyncOperation<double> GetTemperatureAsync() => GetTemperatureAsyncTask().AsAsyncOperation();
         private async Task<double> GetTemperatureAsyncTask()
         {
+            await Task.FromResult(0); //this does nothing except stop the compiler complaining about the lack of await keywords
+
             Log("Retrieving temperature");
             return mainboard.GetTemperature();
         }
