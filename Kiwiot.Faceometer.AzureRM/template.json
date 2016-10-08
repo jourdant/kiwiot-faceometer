@@ -1,9 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "tags": {
-                "source": "empty"
-    },
     "parameters": {
         "Cognitive Services Name": { "type": "String" },
         "Storage Account Name": { "type": "String" },
@@ -23,7 +20,8 @@
             "location": "westus",
             "properties": {},
             "resources": [],
-            "dependsOn": []
+            "dependsOn": [],
+            "tags": { "source": "https://blog.jourdant.me" }
         },
         {
             "comments": "Used for storing the Azure Functions Logs and Image files",
@@ -39,7 +37,8 @@
             "tags": {},
             "properties": {},
             "resources": [],
-            "dependsOn": []
+            "dependsOn": [],
+            "tags": { "source": "https://blog.jourdant.me" }
         },
         {
             "comments": "Hosts the function acting as the IoT gateway.",
@@ -55,7 +54,8 @@
                 ]
             },
             "resources": [],
-            "dependsOn": []
+            "dependsOn": [],
+            "tags": { "source": "https://blog.jourdant.me" }
         }
     ]
 }
