@@ -1,0 +1,61 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "tags": {
+                "source": "empty"
+    },
+    "parameters": {
+        "cognitive_services_name": { "type": "String" },
+        "storage_account_name": { "type": "String" },
+        "functions_name": { "type": "String" }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Used for checking the faces in the images. Must be deployed in westus.",
+            "type": "Microsoft.CognitiveServices/accounts",
+            "sku": {
+                "name": "F0"
+            },
+            "kind": "Face",
+            "name": "[parameters('cognitive_services_name')]",
+            "apiVersion": "2016-02-01-preview",
+            "location": "westus",
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Used for storing the Azure Functions Logs and Image files",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storage_account_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Hosts the function acting as the IoT gateway.",
+            "type": "Microsoft.Web/sites",
+            "kind": "functionapp",
+            "name": "[parameters('functions_name')]",
+            "apiVersion": "2015-08-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "name": "[parameters('functions_name')]",
+                "hostNames": [
+                    "[concat(parameters('functions_name'), '.azurewebsites.net')]"
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        }
+    ]
+}

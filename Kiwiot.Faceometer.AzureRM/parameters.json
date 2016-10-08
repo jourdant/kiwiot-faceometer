@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "cognitive_services_name": {
+            "value": "faceometer-cognitiveservices"
+        },
+        "storage_account_name": {
+            "value": "faceometerstorage"
+        },
+        "functions_name": {
+            "value": "faceometer-functions"
+        }
+    }
+}
