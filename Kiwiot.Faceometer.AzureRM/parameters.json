@@ -2,17 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "Cognitive Services Name": {
-            "value": "faceometer-faceapi"
-        },
-        "Storage Account Name": {
-            "value": "faceometerstorage"
-        },
-        "Functions Name": {
-            "value": "faceometer-functions"
-        },
-        "Faceometer Upload Interval": {
+        "faceometerUploadInterval" : {
             "value": 300
+        },
+        "projectName": {
+            "value": "faceometer"
         }
     }
 }
