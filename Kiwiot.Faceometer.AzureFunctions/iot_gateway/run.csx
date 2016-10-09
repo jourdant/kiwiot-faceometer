@@ -1,11 +1,10 @@
 #r "Newtonsoft.Json"
 #r "Microsoft.WindowsAzure.Storage"
 
-public static string AzureStorageConnectionString => Environment.GetEnvironmentVariable($"CUSTOMCONNSTR_{nameof(AzureStorageConnectionString)}");
-public static string PowerBIURL => Environment.GetEnvironmentVariable($"APPSETTING_{nameof(PowerBIURL)}");
-public static string CognitiveServicesKey => Environment.GetEnvironmentVariable($"APPSETTING_{nameof(CognitiveServicesKey)}");
-public static int RefreshTime => System.Convert.ToInt32(Environment.GetEnvironmentVariable($"APPSETTING_{nameof(RefreshTime)}") ?? "300");
-
+public static string AzureStorageConnectionString => Environment.GetEnvironmentVariable($"CUSTOMCONNSTR_FACEOMETER_AZURESTORAGECONNECTIONSTRING");
+public static string PowerBIURL => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_POWERBIURL");
+public static string CognitiveServicesKey => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_COGNITIVESERVICESKEY");
+public static int RefreshTime => System.Convert.ToInt32(Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_REFRESHTIME") ?? "300");
 private static TraceWriter log;
 
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter l)
@@ -79,6 +78,11 @@ public static async Task<string> UploadImageToBlob(byte[] image, string fileName
 //a quick and simple method for POSTing json and receiving a text based response back
 public static async Task<string> HttpPost(string url, string body, string contentType = "application/json")
 {
+    if (url == string.Empty) {
+        log.Info("Url is empty. Skipping...");
+        return string.Empty;
+    }
+
     var client = System.Net.HttpWebRequest.Create(url);
     client.Method = "POST";
     client.ContentType = contentType;
