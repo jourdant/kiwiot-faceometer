@@ -56,8 +56,8 @@ Function RegisterRP {
         [string]$ResourceProviderNamespace
     )
 
-    Write-Host "Registering resource provider '$ResourceProviderNamespace'";
-    Register-AzureRmResourceProvider -ProviderNamespace $ResourceProviderNamespace -Force;
+    #Write-Host "Registering resource provider '$ResourceProviderNamespace'";
+    Register-AzureRmResourceProvider -ProviderNamespace $ResourceProviderNamespace |out-null
 }
 
 #******************************************************************************
@@ -66,18 +66,14 @@ Function RegisterRP {
 #******************************************************************************
 $ErrorActionPreference = "Stop"
 
-# sign in
-Write-Host "Logging in...";
-Login-AzureRmAccount;
-
 # select subscription
-Write-Host "Selecting subscription '$subscriptionId'";
+#Write-Host "Selecting subscription '$subscriptionId'";
 Select-AzureRmSubscription -SubscriptionID $subscriptionId;
 
 # Register RPs
 $resourceProviders = @("microsoft.cognitiveservices","microsoft.storage","microsoft.web");
 if($resourceProviders.length) {
-    Write-Host "Registering resource providers"
+    #Write-Host "Registering resource providers"
     foreach($resourceProvider in $resourceProviders) {
         RegisterRP($resourceProvider);
     }
@@ -87,21 +83,17 @@ if($resourceProviders.length) {
 $resourceGroup = Get-AzureRmResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
 if(!$resourceGroup)
 {
-    Write-Host "Resource group '$resourceGroupName' does not exist. To create a new resource group, please enter a location.";
-    if(!$resourceGroupLocation) {
-        $resourceGroupLocation = Read-Host "resourceGroupLocation";
-    }
-    Write-Host "Creating resource group '$resourceGroupName' in location '$resourceGroupLocation'";
-    New-AzureRmResourceGroup -Name $resourceGroupName -Location $resourceGroupLocation
+    #Write-Host "Creating resource group '$resourceGroupName' in location '$resourceGroupLocation'";
+    New-AzureRmResourceGroup -Name $resourceGroupName -Location $resourceGroupLocation | out-null
 }
 else{
-    Write-Host "Using existing resource group '$resourceGroupName'";
+    #Write-Host "Using existing resource group '$resourceGroupName'";
 }
 
 # Start the deployment
-Write-Host "Starting deployment...";
+#Write-Host "Starting deployment...";
 if(Test-Path $parametersFilePath) {
-    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile $templateFilePath -TemplateParameterFile $parametersFilePath;
+    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile $templateFilePath -TemplateParameterFile $parametersFilePath -Name $deploymentName;
 } else {
-    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile $templateFilePath;
+    New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile $templateFilePath -Name $deploymentName
 }
