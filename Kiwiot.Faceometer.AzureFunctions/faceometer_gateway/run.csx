@@ -3,7 +3,7 @@
 
 public static string AzureStorageConnectionString => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_AZURESTORAGECONNECTIONSTRING");
 public static string PowerBIURL => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_POWERBIURL");
-public static string CognitiveServicesKey => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_COGNITIVESERVICESKEY");
+public static string CognitiveServicesKey => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_COGNITIVESERVICESFACEKEY");
 public static int RefreshTime => System.Convert.ToInt32(Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_REFRESHTIME") ?? "300");
 private static TraceWriter log;
 
@@ -14,7 +14,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter l)
 
     //grab request body as text
     var jsonContent = await req.Content.ReadAsStringAsync();
-    log.Info($"Incoming message: {jsonContent}");
+    //log.Info($"Incoming message: {jsonContent}");
     log.Info("Deserialising...\r\n");
     var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Telemetry>(jsonContent);
     

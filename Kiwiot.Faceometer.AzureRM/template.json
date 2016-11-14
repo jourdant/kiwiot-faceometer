@@ -17,7 +17,8 @@
         "uniqueStr": "[substring(uniqueString(resourceGroup().id, deployment().name), 0, 7)]",
         "prefix": "[concat(parameters('projectName'), variables('uniqueStr'))]",
         "hostingPlanName": "[concat(variables('prefix'), '-hostingplan')]",
-        "cognitiveServicesName": "[concat(variables('prefix'), '-faceapi')]",
+        "cognitiveServicesFaceName": "[concat(variables('prefix'), '-faceapi')]",
+        "cognitiveServicesCVName": "[concat(variables('prefix'), '-cv')]",
         "functionAppName": "[concat(variables('prefix'), '-functions')]",
         "storageAccountName": "[concat(variables('prefix'), 'storage')]"
     },
@@ -29,14 +30,29 @@
                 "name": "F0"
             },
             "kind": "Face",
-            "name": "[variables('cognitiveServicesName')]",
+            "name": "[variables('cognitiveServicesFaceName')]",
             "apiVersion": "2016-02-01-preview",
             "location": "westus",
             "properties": {},
             "resources": [],
             "dependsOn": [],
             "tags": { "source": "https://blog.jourdant.me" }
+        },
+        {
+            "comments": "Used for checking the faces in the images. Must be deployed in westus.",
+            "type": "Microsoft.CognitiveServices/accounts",
+            "sku": {
+                "name": "F0"
             },
+            "kind": "ComputerVision",
+            "name": "[variables('cognitiveServicesCVName')]",
+            "apiVersion": "2016-02-01-preview",
+            "location": "westus",
+            "properties": {},
+            "resources": [],
+            "dependsOn": [],
+            "tags": { "source": "https://blog.jourdant.me" }
+        },
         {
             "comments": "Used for storing the Azure Functions Logs and Image files",
             "type": "Microsoft.Storage/storageAccounts",
@@ -102,7 +118,8 @@
                         
 
                         { "name": "FACEOMETER_AZURESTORAGECONNECTIONSTRING", "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]" },
-                        { "name": "FACEOMETER_COGNITIVESERVICESKEY", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveServicesName')), providers('Microsoft.CognitiveServices', 'accounts').apiVersions[0]).key1]" },
+                        { "name": "FACEOMETER_COGNITIVESERVICESCVKEY", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveServicesCVName')), providers('Microsoft.CognitiveServices', 'accounts').apiVersions[0]).key1]" },
+                        { "name": "FACEOMETER_COGNITIVESERVICESFACEKEY", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveServicesFaceName')), providers('Microsoft.CognitiveServices', 'accounts').apiVersions[0]).key1]" },
                         { "name": "FACEOMETER_POWERBIURL", "value": "" },
                         { "name": "FACEOMETER_REFRESHTIME", "value": "[parameters('faceometerUploadInterval')]" }
                     ]
@@ -111,7 +128,8 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveServicesName'))]"
+                "[resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveServicesFaceName'))]",
+                "[resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveServicesCVName'))]"
             ]
         }
     ],
