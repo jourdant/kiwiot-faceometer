@@ -8,7 +8,7 @@ using System.IO;
 using Newtonsoft.Json;
 
 public static string AzureStorageConnectionString => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_AZURESTORAGECONNECTIONSTRING");
-public static string PowerBIURL => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_POWERBIURL");
+public static string PowerBIURL => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_POWERBIEMOTIONURL");
 public static string CognitiveServicesFaceKey => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_COGNITIVESERVICESFACEKEY");
 public static string CognitiveServicesEmotionKey => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_COGNITIVESERVICESCVKEY");
 public static int RefreshTime => System.Convert.ToInt32(Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_REFRESHTIME") ?? "300");

@@ -16,7 +16,7 @@
     "variables": {
         "uniqueStr": "[substring(uniqueString(resourceGroup().id, deployment().name), 0, 7)]",
         "prefix": "[concat(parameters('projectName'), variables('uniqueStr'))]",
-        "hostingPlanName": "[concat(variables('prefix'), '-hostingplan')]",
+        "hostingPlanName": "[concat(variables('prefix'), '-appserviceplan')]",
         "cognitiveServicesFaceName": "[concat(variables('prefix'), '-faceapi')]",
         "cognitiveServicesCVName": "[concat(variables('prefix'), '-cv')]",
         "functionAppName": "[concat(variables('prefix'), '-functions')]",
@@ -120,7 +120,8 @@
                         { "name": "FACEOMETER_AZURESTORAGECONNECTIONSTRING", "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]" },
                         { "name": "FACEOMETER_COGNITIVESERVICESCVKEY", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveServicesCVName')), providers('Microsoft.CognitiveServices', 'accounts').apiVersions[0]).key1]" },
                         { "name": "FACEOMETER_COGNITIVESERVICESFACEKEY", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveServicesFaceName')), providers('Microsoft.CognitiveServices', 'accounts').apiVersions[0]).key1]" },
-                        { "name": "FACEOMETER_POWERBIURL", "value": "" },
+                        { "name": "FACEOMETER_POWERBIEMOTIONURL", "value": "" },
+                        { "name": "FACEOMETER_POWERBIFACEURL", "value": "" },
                         { "name": "FACEOMETER_REFRESHTIME", "value": "[parameters('faceometerUploadInterval')]" }
                     ]
                 }

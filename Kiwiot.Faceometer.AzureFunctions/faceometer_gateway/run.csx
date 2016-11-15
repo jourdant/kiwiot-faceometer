@@ -2,7 +2,7 @@
 #r "Microsoft.WindowsAzure.Storage"
 
 public static string AzureStorageConnectionString => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_AZURESTORAGECONNECTIONSTRING");
-public static string PowerBIURL => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_POWERBIURL");
+public static string PowerBIURL => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_POWERBIFACEURL");
 public static string CognitiveServicesKey => Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_COGNITIVESERVICESFACEKEY");
 public static int RefreshTime => System.Convert.ToInt32(Environment.GetEnvironmentVariable($"APPSETTING_FACEOMETER_REFRESHTIME") ?? "300");
 private static TraceWriter log;
