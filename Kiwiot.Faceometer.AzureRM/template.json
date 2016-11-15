@@ -110,7 +110,6 @@
                 },
                 "siteConfig": {
                     "appSettings": [
-                        { "name": "AZUREJOBS_EXTENSION_VERSION", "value": "beta" },
                         { "name": "FUNCTIONS_EXTENSION_VERSION", "value": "latest" },
                         { "name": "WEBSITE_NODE_DEFAULT_VERSION", "value": "6.4.0" },
                         { "name": "AzureWebJobsDashboard", "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]" },
